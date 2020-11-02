@@ -13,7 +13,7 @@ CREATE TABLE `cities` (
   `country_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
     FOREIGN KEY (`country_id`)
-    REFERENCES `country` (`id`)) ;
+    REFERENCES `countries` (`id`)) ;
 
 CREATE TABLE `airports` (
   `code` INT UNSIGNED NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE `airports` (
   `city_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`code`),
     FOREIGN KEY (`city_id`)
-    REFERENCES `city` (`id`)) ;
+    REFERENCES `cities` (`id`)) ;
 
 CREATE TABLE `gates` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -31,7 +31,7 @@ CREATE TABLE `gates` (
   `airport_code` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
     FOREIGN KEY (`airport_code`)
-    REFERENCES `airport` (`code`)) ;
+    REFERENCES `airports` (`code`)) ;
 
 CREATE TABLE `planes` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -52,11 +52,11 @@ CREATE TABLE `flights` (
   `plane_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`number`),
     FOREIGN KEY (`gate_id_in`)
-    REFERENCES `gate` (`id`),
+    REFERENCES `gates` (`id`),
     FOREIGN KEY (`plane_id`)
-    REFERENCES `plane` (`id`),
+    REFERENCES `planes` (`id`),
     FOREIGN KEY (`gate_id_out`)
-    REFERENCES `gate` (`id`)) ;
+    REFERENCES `gates` (`id`)) ;
 
 CREATE TABLE `sits` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -67,7 +67,7 @@ CREATE TABLE `sits` (
   `plane_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
     FOREIGN KEY (`plane_id`)
-    REFERENCES `plane` (`id`)) ;
+    REFERENCES `planes` (`id`)) ;
 
 CREATE TABLE `discounts` (
   `discountСode` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -95,11 +95,11 @@ CREATE TABLE `tickets` (
   `baggage_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
     FOREIGN KEY (`sit_id`)
-    REFERENCES `sit` (`id`),
+    REFERENCES `sits` (`id`),
     FOREIGN KEY (`sales_discountСode`)
-    REFERENCES `discount` (`discountСode`),
+    REFERENCES `discounts` (`discountСode`),
     FOREIGN KEY (`baggage_id`)
-    REFERENCES `baggage` (`id`)) ;
+    REFERENCES `baggages` (`id`)) ;
 
 CREATE TABLE `clients` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -111,4 +111,4 @@ CREATE TABLE `clients` (
   `ticket_id` INT NOT NULL,
   PRIMARY KEY (`id`),
     FOREIGN KEY (`ticket_id`)
-    REFERENCES `ticket` (`id`)) ;
+    REFERENCES `tickets` (`id`)) ;
