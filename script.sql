@@ -16,7 +16,7 @@ CREATE TABLE `cities` (
     REFERENCES `countries` (`id`)) ;
 
 CREATE TABLE `airports` (
-  `code` INT UNSIGNED NOT NULL,
+  `code` VARCHAR(4) NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `type` ENUM("INTL", "DOM") NOT NULL,
   `city_id` INT UNSIGNED NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE `gates` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `number` INT UNSIGNED NOT NULL,
   `type` ENUM("SMALL", "LARGE", "MEDIUM") NOT NULL,
-  `airport_code` INT UNSIGNED NOT NULL,
+  `airport_code` VARCHAR(4) NOT NULL,
   PRIMARY KEY (`id`),
     FOREIGN KEY (`airport_code`)
     REFERENCES `airports` (`code`)) ;
@@ -40,7 +40,7 @@ CREATE TABLE `planes` (
   PRIMARY KEY (`id`)) ;
 
 CREATE TABLE `flights` (
-  `number` INT UNSIGNED NOT NULL,
+  `number` VARCHAR(7) NOT NULL,
   `kind` ENUM("REGULAR", "ADDITIONAL", "SPECIAL", "CHARTER") NOT NULL,
   `type` ENUM("NON-STOP", "DOCKING", "STRAIGHT") NOT NULL,
   `status` ENUM("WAIT", "DONE", "CANCEL") NOT NULL,
@@ -83,24 +83,6 @@ CREATE TABLE `baggages` (
   `type` ENUM("CARRYON", "SUITCASE", "ANIMAL") NOT NULL,
   PRIMARY KEY (`id`)) ;
 
-CREATE TABLE `tickets` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `purchaseDate` DATETIME NOT NULL,
-  `flightNumber` INT UNSIGNED NOT NULL,
-  `planeModel` VARCHAR(45) NOT NULL,
-  `sitNumber` INT UNSIGNED NOT NULL,
-  `baggageWeight` DOUBLE UNSIGNED ZEROFILL NOT NULL,
-  `sit_id` INT UNSIGNED NOT NULL,
-  `sales_discountСode` INT UNSIGNED NOT NULL,
-  `baggage_id` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-    FOREIGN KEY (`sit_id`)
-    REFERENCES `sits` (`id`),
-    FOREIGN KEY (`sales_discountСode`)
-    REFERENCES `discounts` (`discountСode`),
-    FOREIGN KEY (`baggage_id`)
-    REFERENCES `baggages` (`id`)) ;
-
 CREATE TABLE `clients` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `FIO` VARCHAR(255) NOT NULL,
@@ -109,6 +91,21 @@ CREATE TABLE `clients` (
   `gender` ENUM('M', 'F') NOT NULL,
   `account` VARCHAR(45) NOT NULL,
   `ticket_id` INT NOT NULL,
+  PRIMARY KEY (`id`)) ;
+  
+CREATE TABLE `tickets` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `purchaseDate` DATETIME NOT NULL,
+  `sit_id` INT UNSIGNED NOT NULL,
+  `sales_discountСode` INT UNSIGNED NOT NULL,
+  `baggage_id` INT UNSIGNED NOT NULL,
+  `client_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
-    FOREIGN KEY (`ticket_id`)
-    REFERENCES `tickets` (`id`)) ;
+    FOREIGN KEY (`sit_id`)
+    REFERENCES `sits` (`id`),
+    FOREIGN KEY (`sales_discountСode`)
+    REFERENCES `discounts` (`discountСode`),
+    FOREIGN KEY (`baggage_id`)
+    REFERENCES `baggages` (`id`),
+    FOREIGN KEY (`client_id`)
+    REFERENCES `clients` (`id`)) ;
