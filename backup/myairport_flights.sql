@@ -1,0 +1,65 @@
+-- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
+--
+-- Host: localhost    Database: myairport
+-- ------------------------------------------------------
+-- Server version	8.0.22
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `flights`
+--
+
+DROP TABLE IF EXISTS `flights`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `flights` (
+  `number` varchar(7) NOT NULL,
+  `kind` enum('REGULAR','ADDITIONAL','SPECIAL','CHARTER') NOT NULL,
+  `type` enum('NON-STOP','DOCKING','STRAIGHT') NOT NULL,
+  `status` enum('WAIT','DONE','CANCEL') NOT NULL,
+  `arrivalDate` datetime NOT NULL,
+  `departureDate` datetime NOT NULL,
+  `distance` int NOT NULL,
+  `gate_id_in` int unsigned NOT NULL,
+  `gate_id_out` int unsigned NOT NULL,
+  `plane_id` int unsigned NOT NULL,
+  PRIMARY KEY (`number`),
+  KEY `gate_id_in` (`gate_id_in`),
+  KEY `gate_id_out` (`gate_id_out`),
+  KEY `plane_id` (`plane_id`),
+  CONSTRAINT `flights_ibfk_1` FOREIGN KEY (`gate_id_in`) REFERENCES `gates` (`id`),
+  CONSTRAINT `flights_ibfk_2` FOREIGN KEY (`plane_id`) REFERENCES `planes` (`id`),
+  CONSTRAINT `flights_ibfk_3` FOREIGN KEY (`gate_id_out`) REFERENCES `gates` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `flights`
+--
+
+LOCK TABLES `flights` WRITE;
+/*!40000 ALTER TABLE `flights` DISABLE KEYS */;
+INSERT INTO `flights` VALUES ('AY 1252','CHARTER','STRAIGHT','WAIT','2020-11-30 14:10:00','2020-11-30 16:20:00',910,4,1,9),('DP 845','REGULAR','STRAIGHT','WAIT','2020-11-05 20:00:00','2020-11-05 22:45:00',1420,8,4,1),('EK 160','REGULAR','DOCKING','CANCEL','2020-11-21 09:10:00','2020-11-21 10:00:00',1020,8,3,7),('F1 178','REGULAR','DOCKING','CANCEL','2020-11-06 11:00:00','2020-11-06 14:15:00',811,1,7,2),('F2 170','REGULAR','STRAIGHT','CANCEL','2020-11-05 12:00:00','2020-11-05 14:45:00',1350,9,11,5),('FR 170','REGULAR','STRAIGHT','DONE','2020-11-01 17:45:00','2020-11-01 18:45:00',1200,8,10,3),('KL 1124','ADDITIONAL','NON-STOP','CANCEL','2020-10-02 20:00:00','2020-10-02 21:40:00',520,9,1,6),('TK 2107','ADDITIONAL','NON-STOP','WAIT','2020-11-04 23:50:00','2020-11-05 02:35:00',2400,9,3,10),('U2 8423','REGULAR','NON-STOP','CANCEL','2020-11-05 21:25:00','2020-11-06 01:10:00',720,2,4,4),('W6 1475','REGULAR','NON-STOP','WAIT','2020-11-07 11:40:00','2020-11-07 12:45:00',1520,10,2,8);
+/*!40000 ALTER TABLE `flights` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2020-12-25 16:00:16
